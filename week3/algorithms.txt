@@ -1,0 +1,9 @@
+Big O notation: A way to describe the performance or complexity of an algorithm.
+It describes how the running time or space requirements of an algorithm grow as the input size increases.
+
+Big Omega notation(Ω): A lower bound on the running time of an algorithm. It describes the best-case scenario for an algorithm.
+
+Capital theta notation(Θ): Is when Big O and Big Omega are the same, meaning the algorithm has the same upper and lower bounds.
+
+O(n): linear search, where the time taken grows with the input size.
+O(log n): binary search, where the time taken grows logarithmically with the input size.
