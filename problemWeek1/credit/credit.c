@@ -72,17 +72,189 @@ int main(void)
   //  American Express: 15 digits, starts with 34 or 37
   if ((cardNumber >= 340000000000000 && cardNumber <= 349999999999999) || (cardNumber >= 370000000000000 && cardNumber <= 379999999999999))
   {
-    printf("AMEX\n");
+    // Here now i wil start to implement the Luhn's algorithm to validate the card number
+    int listAmex[15];
+    int divTeste;
+    long long div = 100000000000000;
+
+    // Here I will create a list with the digits of the card number, so I can manipulate them later
+    for (int i = 0; i < 15; i++)
+    {
+      divTeste = cardNumber / div;
+      cardNumber = cardNumber - (divTeste * div);
+      div /= 10;
+      listAmex[i] = divTeste;
+    }
+
+    // Now I will implement the Luhn's algorithm
+    int sum = 0;
+    // Here i will go through the list of digits.
+    for (int j = 0; j < 15; j++)
+    {
+      // Every other digit starting from the second to last digit will be multiplied by 2, and if the product is greater than 9, I will sum the digits of the product.
+      if (j % 2 == 0)
+      {
+        int product = listAmex[j] * 2;
+        if (product > 9)
+        {
+          sum += product / 10 + product % 10; // Here I will sum the digits of the product. Ex: if the product is 12, I will sum 1 + 2 = 3
+        }
+        else
+        {
+          sum += product;
+        }
+      }
+      // The other digits will be added to the sum without any manipulation.
+      else
+      {
+        sum += listAmex[j];
+      }
+    }
+
+    if (sum % 10 == 0)
+    {
+      printf("AMEX\n");
+    }
+    else
+    {
+      printf("INVALID\n");
+    }
   }
+
   // MasterCard: 16 digits, starts with 51, 52, 53, 54, or 55
   else if (cardNumber >= 5100000000000000 && cardNumber <= 5599999999999999)
   {
-    printf("MASTERCARD\n");
+    int listMaster[16];
+    int divTeste;
+    long long div = 1000000000000000;
+
+    for (int i = 0; i < 16; i++)
+    {
+      divTeste = cardNumber / div;
+      cardNumber = cardNumber - (divTeste * div);
+      div /= 10;
+      listMaster[i] = divTeste;
+    }
+
+    int sum = 0;
+    for (int j = 0; j < 16; j++)
+    {
+      if (j % 2 == 0)
+      {
+        int product = listMaster[j] * 2;
+        if (product > 9)
+        {
+          sum += product / 10 + product % 10;
+        }
+        else
+        {
+          sum += product;
+        }
+      }
+      else
+      {
+        sum += listMaster[j];
+      }
+    }
+    if (sum % 10 == 0)
+    {
+      printf("MASTERCARD\n");
+    }
+    else
+    {
+      printf("INVALID\n");
+    }
   }
   // Visa: 13 or 16 digits, starts with 4
   else if ((cardNumber >= 4000000000000 && cardNumber <= 4999999999999) || (cardNumber >= 4000000000000000 && cardNumber <= 4999999999999999))
   {
-    printf("VISA\n");
+    // Here I will check if the card number is 13 digits or 16 digits, and then I will implement the Luhn's algorithm accordingly.
+    if (cardNumber >= 4000000000000 && cardNumber <= 4999999999999)
+    {
+      int listVisa[13];
+      int divTeste;
+      long long div = 1000000000000;
+
+      for (int i = 0; i < 13; i++)
+      {
+        divTeste = cardNumber / div;
+        cardNumber = cardNumber - (divTeste * div);
+        div /= 10;
+        listVisa[i] = divTeste;
+      }
+
+      int sum = 0;
+      for (int j = 0; j < 13; j++)
+      {
+        if (j % 2 == 0)
+        {
+          int product = listVisa[j] * 2;
+          if (product > 9)
+          {
+            sum += product / 10 + product % 10;
+          }
+          else
+          {
+            sum += product;
+          }
+        }
+        else
+        {
+          sum += listVisa[j];
+        }
+      }
+      if (sum % 10 == 0)
+      {
+        printf("VISA\n");
+      }
+      else
+      {
+        printf("INVALID\n");
+      }
+    }
+    else
+    {
+      int listVisa[16];
+      int divTeste;
+      long long div = 1000000000000000;
+
+      for (int i = 0; i < 16; i++)
+      {
+        divTeste = cardNumber / div;
+        cardNumber = cardNumber - (divTeste * div);
+        div /= 10;
+        listVisa[i] = divTeste;
+      }
+
+      int sum = 0;
+      for (int j = 0; j < 16; j++)
+      {
+        if (j % 2 == 0)
+        {
+          int product = listVisa[j] * 2;
+          if (product > 9)
+          {
+            sum += product / 10 + product % 10;
+          }
+          else
+          {
+            sum += product;
+          }
+        }
+        else
+        {
+          sum += listVisa[j];
+        }
+      }
+      if (sum % 10 == 0)
+      {
+        printf("VISA\n");
+      }
+      else
+      {
+        printf("INVALID\n");
+      }
+    }
   }
   else
   {
