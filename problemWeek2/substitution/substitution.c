@@ -28,47 +28,91 @@ int main(void)
   char plaintext[1000];
   char ciphertext[1000];
 
+  int validKey;
+
   do
   {
+    validKey = 1;
+
     printf("Enter the key (26 unique letters): ");
+
     fgets(usKey, sizeof(usKey), stdin);
+
     usKey[strcspn(usKey, "\n")] = '\0';
 
-  } while (strlen(usKey) != 26);
-
-  printf("Enter the plaintext: ");
-  fgets(plaintext, sizeof(plaintext), stdin);
-
-  for (int i = 0; i < strlen(plaintext); i++)
-  {
-    plaintext[i] = toupper(plaintext[i]); // Convert to uppercase for consistency
-  }
-
-  for (int j = 0; j < strlen(plaintext); j++)
-  {
-    for (int k = 0; k < 26; k++)
+    // Check if the key has exactly 26 characters
+    if (strlen(usKey) != 26)
     {
-      if (plaintext[j] == alphabet[k])
+      validKey = 0;
+      continue;
+    }
+
+    // Check if every character is a letter
+    for (int i = 0; i < 26; i++)
+    {
+      if (!isalpha(usKey[i]))
       {
-        ciphertext[j] = usKey[k];
+        validKey = 0;
         break;
       }
-      else
+    }
+
+    // Check if every letter is unique
+    for (int i = 0; i < 26 && validKey; i++)
+    {
+      for (int j = i + 1; j < 26; j++)
       {
-        ciphertext[j] = plaintext[j]; // Keep non-alphabet characters unchanged
+        if (toupper(usKey[i]) == toupper(usKey[j]))
+        {
+          validKey = 0;
+          break;
+        }
+      }
+    }
+
+  } while (!validKey);
+
+  printf("Enter the plaintext: ");
+
+  fgets(plaintext, sizeof(plaintext), stdin);
+
+  int size = strlen(plaintext);
+
+  for (int j = 0; j < size; j++)
+  {
+    // Keep non-alphabet characters unchanged
+    if (!isalpha(plaintext[j]))
+    {
+      ciphertext[j] = plaintext[j];
+    }
+
+    else
+    {
+      for (int k = 0; k < 26; k++)
+      {
+        if (toupper(plaintext[j]) == alphabet[k])
+        {
+          // Keep uppercase letters uppercase
+          if (isupper(plaintext[j]))
+          {
+            ciphertext[j] = toupper(usKey[k]);
+          }
+
+          // Keep lowercase letters lowercase
+          else
+          {
+            ciphertext[j] = tolower(usKey[k]);
+          }
+
+          break;
+        }
       }
     }
   }
 
-  for (int m = 0; m < strlen(plaintext); m++)
-  {
-    printf("%c", ciphertext[m]);
-  }
-  printf("\n");
-  for (int n = 0; n < strlen(plaintext); n++)
-  {
-    printf("%c", plaintext[n]);
-  }
+  ciphertext[size] = '\0';
+
+  printf("ciphertext: %s", ciphertext);
 
   return 0;
 }
